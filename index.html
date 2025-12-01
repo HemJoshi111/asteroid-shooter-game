@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Asteroid Shooter</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body class="bg-black text-white flex items-center justify-center h-screen">
+    <div class="game-container">
+      <div class="info-panel">
+        <div id="score-container">SCORE: <span id="score">0</span></div>
+        <div id="lives-container">LIVES: <span id="lives">3</span></div>
+      </div>
+      <canvas id="gameCanvas"></canvas>
+      <div id="message-box" class="hidden">
+        <h2 id="message-title">GAME OVER</h2>
+        <p id="message-score"></p>
+        <p id="survival-tip"></p>
+        <button id="restart-button">RESTART</button>
+        <button id="survival-tip-button">✨ GET SURVIVAL TIP</button>
+      </div>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>
