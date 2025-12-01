@@ -9,6 +9,10 @@ const restartButton = document.getElementById('restart-button');
 const survivalTipButton = document.getElementById('survival-tip-button');
 const survivalTipEl = document.getElementById('survival-tip');
 
+// Grab the start screen elements
+const startScreen = document.getElementById('start-screen');
+const startButton = document.getElementById('start-button');
+
 let ship, asteroids, bullets, keys, score, lives, level, gameOver;
 const SHIP_SIZE = 30;
 const SHIP_THRUST = 5;
@@ -43,6 +47,8 @@ function newGame() {
     gameOver = false;
     updateUI();
     newLevel();
+    // Start the game loop only when newGame is called
+    requestAnimationFrame(update);
 }
 
 function newLevel() {
@@ -60,6 +66,9 @@ function newShip() {
         rot: 0,
         thrusting: false,
         thrust: { x: 0, y: 0 },
+        // Track raw input states for smart controls
+        upInput: false,
+        downInput: false,
         canShoot: true,
         dead: false,
         explodeTime: 0,
@@ -124,6 +133,29 @@ function distBetweenPoints(x1, y1, x2, y2) {
 
 function update(deltaTime) {
     if (gameOver) return;
+
+    // Logic for Smart Thrust controls based on orientation
+    // Normalize angle to 0 - 2PI (0 to 360 degrees)
+    let angle = ship.a % (Math.PI * 2);
+    if (angle < 0) angle += Math.PI * 2;
+
+    // Define Zones based on radians
+    // Up/Right Zone: [0 to 135 deg] OR [315 to 360 deg]
+    const boundary1 = 3 * Math.PI / 4; // 135 degrees
+    const boundary2 = 7 * Math.PI / 4; // 315 degrees
+
+    // Check orientation
+    const isUpRight = (angle >= 0 && angle < boundary1) || (angle >= boundary2);
+    const isDownLeft = (angle >= boundary1 && angle < boundary2);
+
+    // Apply thrust based on input and orientation
+    if (ship.upInput && isUpRight) {
+        ship.thrusting = true;
+    } else if (ship.downInput && isDownLeft) {
+        ship.thrusting = true;
+    } else {
+        ship.thrusting = false;
+    }
 
     const blinkOn = ship.blinkNum % 2 == 0;
     const exploding = ship.explodeTime > 0;
@@ -286,6 +318,16 @@ function drawShip(x, y, a) {
     ctx.lineTo(x - ship.r * (2 / 3 * Math.cos(a) - Math.sin(a)), y + ship.r * (2 / 3 * Math.sin(a) + Math.cos(a)));
     ctx.closePath();
     ctx.stroke();
+
+    // Add a red dot at the nose to show shooting direction
+    ctx.fillStyle = 'red';
+    ctx.beginPath();
+    ctx.arc(
+        x + 4 / 3 * ship.r * Math.cos(a),
+        y - 4 / 3 * ship.r * Math.sin(a),
+        SHIP_SIZE / 10, 0, Math.PI * 2, false
+    );
+    ctx.fill();
 }
 
 function explodeShip() {
@@ -334,7 +376,7 @@ async function getSurvivalTip() {
     survivalTipButton.textContent = 'ANALYZING FAILURE...';
     survivalTipEl.textContent = '';
 
-    const apiKey = "";
+    const apiKey = ""; // This will be provided by the environment
     const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${apiKey}`;
 
     const systemPrompt = "You are a witty, retro-arcade game AI from the 1980s. The player just lost a game of Asteroid Shooter. Your job is to give them a single, short, clever, and funny survival tip for their next attempt. The tip should be encouraging but also slightly sarcastic. Keep it under 25 words and deliver it with classic arcade flair.";
@@ -376,8 +418,9 @@ function keyDown(/** @type {KeyboardEvent} */ ev) {
     switch (ev.keyCode) {
         case 32: shootLaser(); break; // space
         case 37: ship.rot = TURN_SPEED / 180 * Math.PI / 60; break; // left
-        case 38: ship.thrusting = true; break; // up
+        case 38: ship.upInput = true; break; // up
         case 39: ship.rot = -TURN_SPEED / 180 * Math.PI / 60; break; // right
+        case 40: ship.downInput = true; break; // down
     }
 }
 
@@ -385,8 +428,9 @@ function keyUp(/** @type {KeyboardEvent} */ ev) {
     if (ship.dead || gameOver) return;
     switch (ev.keyCode) {
         case 37: ship.rot = 0; break; // left
-        case 38: ship.thrusting = false; break; // up
+        case 38: ship.upInput = false; break; // up
         case 39: ship.rot = 0; break; // right
+        case 40: ship.downInput = false; break; // down
     }
 }
 
@@ -400,8 +444,12 @@ restartButton.addEventListener('click', () => {
 });
 survivalTipButton.addEventListener('click', getSurvivalTip);
 
+// Add event listener for start button
+startButton.addEventListener('click', () => {
+    startScreen.classList.add('hidden'); // Hide the start screen
+    newGame(); // Start the game loop
+});
+
 // Initialize
 setCanvasSize();
 bullets = [];
-newGame();
-update();

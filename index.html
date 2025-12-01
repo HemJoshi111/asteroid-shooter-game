@@ -8,26 +8,68 @@
     <link rel="stylesheet" href="style.css" />
   </head>
   <body class="bg-black text-white flex items-center justify-center h-screen">
-    <div class="game-container">
-      <div class="info-panel">
-        <div id="score-container">SCORE: <span id="score">0</span></div>
-        <div id="lives-container">LIVES: <span id="lives">3</span></div>
+    <!-- Wrapper to hold instructions and game side-by-side -->
+    <div class="main-layout">
+      <!-- INSTRUCTIONS PANEL -->
+      <div class="instructions-panel">
+        <h3>HOW TO PLAY</h3>
+        <ul>
+          <li>
+            <span class="key">⬆️/⬇️</span>
+            <span class="action">THRUST</span>
+          </li>
+          <li>
+            <span class="key">⬅️</span>
+            <span class="action">LEFT</span>
+          </li>
+          <li>
+            <span class="key">➡️</span>
+            <span class="action">RIGHT</span>
+          </li>
+          <li>
+            <span class="key">SPACE</span>
+            <span class="action">SHOOT</span>
+          </li>
+        </ul>
+        <div class="mission">
+          <p>MISSION:</p>
+          <p>Destroy all asteroids.</p>
+          <p>Don't crash.</p>
+        </div>
       </div>
-      <canvas id="gameCanvas"></canvas>
 
-      <div class="footer">
-        Made with <span class="heart">❤️</span> by Hem Joshi
-      </div>
+      <!-- GAME CONTAINER -->
+      <div class="game-container">
+        <div class="info-panel">
+          <div id="score-container">SCORE: <span id="score">0</span></div>
+          <div id="lives-container">LIVES: <span id="lives">3</span></div>
+        </div>
 
-      <div id="message-box" class="hidden">
-        <h2 id="message-title">GAME OVER</h2>
-        <p id="message-score"></p>
-        <p id="survival-tip"></p>
-        <button id="restart-button">RESTART</button>
-        <button id="survival-tip-button">✨ GET SURVIVAL TIP</button>
+        <canvas id="gameCanvas"></canvas>
+
+        <div class="footer">
+          Made with <span class="heart">❤️</span> by Hem Joshi
+        </div>
+
+        <!-- START SCREEN -->
+        <div id="start-screen">
+          <h1>Asteroid<br />Shooter</h1>
+          <p>Press Start to begin<br />your mission!</p>
+          <button id="start-button">START GAME</button>
+        </div>
+
+        <!-- GAME OVER MESSAGE BOX -->
+        <div id="message-box" class="hidden">
+          <h2 id="message-title">GAME OVER</h2>
+          <p id="message-score"></p>
+          <p id="survival-tip"></p>
+          <button id="restart-button">RESTART</button>
+          <button id="survival-tip-button">✨ GET SURVIVAL TIP</button>
+        </div>
       </div>
     </div>
 
+    <!-- This links to your Javascript game logic file -->
     <script src="script.js"></script>
   </body>
 </html>

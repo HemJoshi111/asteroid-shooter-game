@@ -12,10 +12,89 @@ body {
     overflow: hidden;
 }
 
+.main-layout {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    /* Space between instructions and game */
+    padding: 1rem;
+}
+
+/* RESPONSIVE: Stack them on small screens */
+@media (max-width: 1000px) {
+    .main-layout {
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .instructions-panel {
+        display: none;
+        /* Hide instructions on very small screens to save space */
+    }
+}
+
+/* INSTRUCTION PANEL STYLES */
+.instructions-panel {
+    border: 2px solid #39FF14;
+    padding: 1.5rem;
+    background-color: #0a0a0a;
+    box-shadow: 0 0 15px rgba(57, 255, 20, 0.3);
+    min-width: 200px;
+}
+
+.instructions-panel h3 {
+    color: #39FF14;
+    font-size: 1rem;
+    margin-bottom: 1.5rem;
+    text-align: center;
+    text-shadow: 0 0 5px #39FF14;
+}
+
+.instructions-panel ul {
+    list-style: none;
+    padding: 0;
+}
+
+.instructions-panel li {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1rem;
+    font-size: 0.8rem;
+}
+
+.instructions-panel .key {
+    background: #333;
+    padding: 5px 8px;
+    border-radius: 4px;
+    border: 1px solid #666;
+    margin-right: 10px;
+    color: #fff;
+    min-width: 30px;
+    text-align: center;
+    box-shadow: 0 2px 0 #000;
+}
+
+.instructions-panel .action {
+    color: #aaa;
+}
+
+.instructions-panel .mission {
+    margin-top: 2rem;
+    border-top: 1px dashed #333;
+    padding-top: 1rem;
+    font-size: 0.6rem;
+    color: #888;
+    line-height: 1.6;
+    text-align: center;
+}
+
+/* GAME CANVAS */
 canvas {
     background-color: #0a0a0a;
     border: 2px solid #39FF14;
     box-shadow: 0 0 20px #39FF14;
+    max-width: 100%;
+    /* Ensures it shrinks on small screens */
 }
 
 .game-container {
@@ -23,6 +102,7 @@ canvas {
     flex-direction: column;
     align-items: center;
     gap: 1rem;
+    position: relative;
 }
 
 .info-panel {
@@ -34,19 +114,69 @@ canvas {
     font-size: 1.2rem;
 }
 
+/* COMMON OVERLAY STYLES (Used for Start Screen & Game Over) */
+#start-screen,
 #message-box {
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    background-color: rgba(0, 0, 0, 0.85);
+    background-color: rgba(0, 0, 0, 0.95);
     padding: 2rem;
-    border: 2px solid #39FF14;
-    box-shadow: 0 0 20px #39FF14;
     text-align: center;
     z-index: 10;
     width: 90%;
     max-width: 500px;
+}
+
+/* START SCREEN SPECIFIC STYLES */
+#start-screen {
+    border: 4px solid #D900FF;
+    /* Neon Purple Border */
+    box-shadow: 0 0 25px #D900FF, inset 0 0 15px #D900FF;
+    /* Outer and Inner Glow */
+    border-radius: 20px;
+}
+
+#start-screen h1 {
+    font-size: 2.5rem;
+    color: #FFD700;
+    /* Gold */
+    text-shadow: 4px 4px 0px #333;
+    margin-bottom: 1.5rem;
+    line-height: 1.2;
+}
+
+#start-screen p {
+    font-size: 0.9rem;
+    margin-bottom: 2rem;
+    color: #fff;
+    line-height: 1.6;
+}
+
+#start-button {
+    background-color: #00FFFF;
+    /* Cyan */
+    color: #000;
+    font-size: 1.2rem;
+    padding: 1rem 2rem;
+    border: none;
+    border-radius: 8px;
+    font-family: 'Press Start 2P', cursive;
+    cursor: pointer;
+    box-shadow: 0 0 15px #00FFFF;
+    transition: all 0.2s;
+}
+
+#start-button:hover {
+    background-color: #fff;
+    transform: scale(1.05);
+}
+
+/* GAME OVER BOX STYLES */
+#message-box {
+    border: 2px solid #39FF14;
+    box-shadow: 0 0 20px #39FF14;
 }
 
 #message-box h2 {
@@ -89,11 +219,10 @@ canvas {
     text-shadow: 0 0 5px #00ff00;
 }
 
+/* FOOTER STYLES */
 .footer {
     font-size: 0.7rem;
-    /* Smaller text for footer */
     color: #666;
-    /* Grey color so it doesn't distract */
     margin-top: 0.5rem;
     letter-spacing: 1px;
 }
@@ -102,7 +231,6 @@ canvas {
     color: red;
     display: inline-block;
     animation: heartbeat 1.5s infinite;
-    /* Makes it beat forever */
 }
 
 @keyframes heartbeat {
@@ -129,4 +257,9 @@ canvas {
     100% {
         transform: scale(1);
     }
+}
+
+/* UTILITY */
+.hidden {
+    display: none !important;
 }
