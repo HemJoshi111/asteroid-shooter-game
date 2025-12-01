@@ -2,6 +2,14 @@
 
 A classic retro-style arcade game built with vanilla JavaScript, HTML5 Canvas, and Tailwind CSS. This project features a unique integration with Google's Gemini API to provide witty, sarcastic, and helpful "Survival Tips" whenever the player loses.
 
+---
+
+## 🌐 Live Demo
+
+- **Live URL:** [https://asteroid-shooter-gamee.vercel.app](https://asteroid-shooter-gamee.vercel.app)
+
+---
+
 ![Project Status](https://img.shields.io/badge/status-active-brightgreen)
 ![License](https://img.shields.io/badge/license-MIT-blue)
 
@@ -70,4 +78,3 @@ Contributions are welcome! If you'd like to improve the game (e.g., add sound ef
 ## 📄 License
 
 This project is open-source and available for personal and educational use.
-
